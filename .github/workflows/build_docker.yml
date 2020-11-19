@@ -24,6 +24,6 @@ jobs:
       - name: Build
         if: ${{ github.ref == 'refs/heads/main' && success() }}
         run: |
-           docker build -t windows:latest .
+           docker build -t windows .
            docker tag windows:latest realthread/windows:latest
            docker push realthread/windows:latest
