@@ -16,10 +16,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Build and Push
+        
+      - name: Login in docker
         run: |
-           echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          
+      - name: Build
+        if: ${{ github.ref == 'refs/heads/main' && success() }}
+        run: |
            docker build -t windows:latest .
            docker tag windows:latest realthread/windows:latest
            docker push realthread/windows:latest
