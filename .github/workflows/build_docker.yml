@@ -17,14 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
       - name: Build and Push
         run: |
+           echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
            docker build -t windows:latest .
            docker tag windows:latest realthread/windows:latest
            docker push realthread/windows:latest
